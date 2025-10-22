@@ -1,0 +1,12 @@
+.page-content {
+  padding: 1rem;
+  padding-top: 64px; /* desktop toolbar height */
+    position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 600px) {
+  .page-content {
+    padding-top: 56px; /* mobile toolbar height */
+  }
+}

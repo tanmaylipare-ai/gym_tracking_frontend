@@ -1,0 +1,52 @@
+.example-card {
+  max-width: 400px;
+}
+.card-content-subtitle {
+  margin-bottom: 0; 
+  font-weight: lighter;
+  font-style: oblique;
+}
+.card-title{
+    font-weight: bolder;
+}
+
+.example-container {
+  width: auto;
+  height: auto;
+  margin: 10px;
+  border: 1px solid #555;
+  /* The background property is added to clearly distinguish the borders between drawer and main
+     content */
+  /* background: #eee; */
+}
+
+
+.card-actions-spaced {
+  display: flex;    
+  justify-content: space-evenly; /* or space-around, space-between */
+}
+
+.custom-drawer {
+  width: auto; /* or your preferred width */
+  min-width: 160px;
+  transition: transform 0.3s, width 0.3s;
+  transform: translateX(0);
+  visibility: visible;
+}
+
+/* Mobile: minimize/hide drawer */
+@media (max-width: 800px) {
+  .custom-drawer {
+    width: 0 !important;
+    min-width: 0 !important;
+    overflow: hidden;
+    visibility: hidden;
+    transform: translateX(-100%);
+  }
+}
+
+@media (max-width: 1000px) {
+  .custom-drawer > * {
+    display: none;
+  }
+}

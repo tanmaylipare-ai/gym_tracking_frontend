@@ -1,1 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+:root {
+  --body-bg: #F5F5F5;     /* choose from the list above */
+  --text-color: #111111;  /* strong contrast on light bg */
+}
+
+:root{
+  --bg: #ffffff;           /* page background (white) */
+  --panel-bg: #ffffff;     /* card/list background */
+  --muted-bg: #f3f3f3;     /* light gray surfaces */
+  --text: #0a0a0a;         /* primary text (near black) */
+  --muted-text: #666666;   /* secondary text */
+  --accent: #000000;       /* black accent */
+  --selected-bg: #666666;  /* selected item background */
+  --selected-text: #ffffff;/* selected text color */
+  --shadow: rgba(0,0,0,0.06);
+}
+  
+:host{
+  display:block;
+  background: var(--bg);
+  min-height:100vh;
+}

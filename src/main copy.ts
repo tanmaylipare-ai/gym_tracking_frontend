@@ -13,33 +13,18 @@ import { RoutineComponent } from './app/pages/routine/routine.component';
 import { ExerciseComponent } from './app/pages/exercise/exercise.component';
 import { WorkoutComponent } from './app/pages/workout/workout.component';
 import { authGuard } from './app/core/guards/auth.guard';
-import { MainLayoutComponent } from './app/main-layout/main-layout.component';
-
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { authInterceptor } from './app/core/services/auth.intercepter';
 
 bootstrapApplication(AppComponent, {
-  providers: [provideHttpClient(withInterceptors([authInterceptor])),
-    provideRouter([ 
+  providers: [
+    provideRouter([
       { path: '', redirectTo: '/login', pathMatch: 'full' },
-
-      // ❌ No header for these routes
       { path: 'login', component: LoginComponent },
       { path: 'register', component: RegisterComponent },
-
-      // ✅ Protected routes under MainLayout
-      {
-        path: '',
-        component: MainLayoutComponent,
-        canActivate: [authGuard],
-        children: [
-          { path: 'home', component: HomeComponent },
-          { path: 'profile', component: ProfileComponent },
-          { path: 'routine', component: RoutineComponent },
-          { path: 'exercise', component: ExerciseComponent },
-          { path: 'workout', component: WorkoutComponent }
-        ]
-      }
+      { path: 'home', component: HomeComponent, canActivate: [authGuard] },
+      { path: 'profile', component: ProfileComponent,canActivate: [authGuard]  },
+      { path: 'routine', component: RoutineComponent,canActivate: [authGuard]  },
+      { path: 'exercise', component: ExerciseComponent,canActivate: [authGuard]  },
+      { path: 'workout', component: WorkoutComponent,canActivate: [authGuard]  },
     ]),
     importProvidersFrom(BrowserAnimationsModule, HttpClientModule)
   ]

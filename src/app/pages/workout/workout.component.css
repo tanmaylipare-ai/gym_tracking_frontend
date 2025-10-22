@@ -1,0 +1,282 @@
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative; /* changed from sticky to relative for centering positioning */
+  padding: 0 12px;
+  height: 54px;
+  background: #22232b;
+  position: sticky;
+  top: -1;
+  z-index: 10;
+}
+
+.header-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    color: #F5f5f5;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+    padding-top: 0.5rem;
+  height: 100px; /* Adjust height as needed to match pill */
+  width: auto;  /* Keep aspect ratio */
+  display: block;
+}
+
+.header-icon {
+  padding-top: 0.5rem;
+  background: none;
+  border: none; 
+  color: var(--text);
+  font-size: 1.45rem;
+  cursor: pointer;
+  margin-left: 0.5rem;
+}
+
+.container {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 12px 8px 64px 8px;
+}
+
+.section {
+  margin-bottom: 24px;
+}
+
+.section-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 13px;
+  margin-top: 0;
+}
+
+.big-action {
+  background: #23232b;
+  color: var(--text);
+  border-radius: 10px;
+  border: none;
+  padding: 16px 12px;
+  width: 100%;
+  font-size: 1.09rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.8em;
+  cursor: pointer;
+  transition: background 0.18s;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.17);
+}
+.big-action:hover {
+  background: #282834;
+}
+
+/* Routines section */
+.routines-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.routines-title-row .icon-btn {
+  margin-left: 8px;
+}
+
+.routine-actions {
+  display: flex;
+  gap: 1.1em;
+  margin-bottom: 7px;
+}
+.action-btn {
+  background: #23232b;
+  color: var(--text);
+  border: none;
+  padding: 9px 17px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  font-size: 1em;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.16s;
+}
+.action-btn:hover {
+  background: #1d1d23;
+}
+.icon-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.3em;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 24px;
+  transition: background 0.16s;
+}
+.icon-btn:hover {
+  background: #191a22;
+  color: var(--primary);
+}
+
+.routines-list-label {
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  margin: 9px 0 5px 0;
+  font-size: 0.98em;
+  font-weight: 500;
+}
+
+/* Routine cards */
+.routine-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.routine-card {
+  background: var(--card-bg);
+  border-radius: 13px;
+  margin-bottom: 15px;
+  padding: 17px 14px 11px 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.routine-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.4em;
+}
+.routine-title {
+  font-weight: bold;
+  font-size: 1.04em;
+  color: var(--text);
+  margin-bottom: 3px;
+  letter-spacing: 0.01em;
+}
+
+.routine-desc {
+  color: var(--text-secondary);
+  margin: 0;
+  font-size: 0.97em;
+  line-height: 1.19em;
+}
+
+.routine-btn {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 11px 0;
+  font-size: 1em;
+  font-weight: 600;
+  width: 100%;
+  cursor: pointer;
+  transition: background 0.16s;
+  box-shadow: 0 2px 7px rgba(38,150,255,0.09);
+}
+.routine-btn:hover, .routine-btn:focus {
+  background: #0d8cfb;
+}
+
+/* Bottom navigation - for mobile */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  background: #22232b;
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.14);
+  z-index: 20;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.nav-btn {
+  flex: 1 1 0;
+  text-align: center;
+  padding: 6px 0 5px 0;
+  color: #b3b3b6;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.95em;
+  gap: 0.2em;
+  border-top: 2.2px solid transparent;
+  transition: color 0.18s, border-color 0.22s;
+}
+.nav-btn.active, .nav-btn:hover {
+  color: var(--primary);
+  border-top: 2.2px solid var(--primary);
+}
+.material-icons {
+  font-size: 1.7em;
+}
+
+/* Responsive design */
+@media (min-width: 630px) {
+  .container {
+    padding: 28px 0 90px 0;
+  }
+  .bottom-nav {
+    position: absolute;
+    left: 0;
+    right: 0;
+    width: 100%;
+    bottom: 0;
+    padding-bottom: 0;
+  }
+}
+
+@media (min-width: 900px) {
+  .container {
+    max-width: 740px;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .routine-card {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 32px;
+    padding: 19px 22px 14px 22px;
+  }
+  .routine-header {
+    flex-grow: 1;
+  }
+  .routine-btn {
+    max-width: 210px;
+    min-width: 150px;
+    margin-left: 16px;
+  }
+  .logo {
+    padding-top: 0.5rem;
+    height: 120px; /* Adjust height as needed to match pill */
+    width: auto;  /* Keep aspect ratio */
+    display: block;
+}
+}

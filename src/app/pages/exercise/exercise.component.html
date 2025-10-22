@@ -1,0 +1,66 @@
+<div class="exercise-page">
+  <!-- MOBILE: Dropdown Selector -->
+  <div class="mobile-only mobile-header">
+    <h2 class="page-title">Exercises</h2>
+    <mat-form-field appearance="fill" class="mobile-select">
+      <mat-label>Select Exercise</mat-label>
+      <mat-select
+        [(value)]="selectedExercise"
+        (selectionChange)="selectExercise($event.value)"
+      >
+        <mat-option *ngFor="let ex of exercises" [value]="ex">
+          {{ ex.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <!-- LEFT SECTION: Details -->
+  <div class="exercise-details" *ngIf="selectedExercise; else noSelection">
+    <mat-card class="exercise-card">
+      <h2>{{ selectedExercise?.name }}</h2>
+      <p>{{ selectedExercise?.description || 'No description available.' }}</p>
+    </mat-card>
+
+    <mat-card *ngIf="exerciseSummary" class="summary-card">
+      <h3>Summary</h3>
+      <div class="summary-grid">
+        <div><strong>{{ exerciseSummary.max_weight }}</strong><span>kg Max</span></div>
+        <div><strong>{{ exerciseSummary.reps_at_max_weight }}</strong><span>Reps Max</span></div>
+        <div><strong>{{ exerciseSummary.avg_reps }}</strong><span>Avg Reps</span></div>
+        <div><strong>{{ exerciseSummary.total_sets }}</strong><span>Total Sets</span></div>
+        <div><strong>{{ exerciseSummary.total_volume }}</strong><span>Total Volume</span></div>
+        <div><span>Last:</span> {{ exerciseSummary.last_performed || 'Never' }}</div>
+      </div>
+    </mat-card>
+  </div>
+
+  <ng-template #noSelection>
+    <div class="no-selection">
+      <p>Select an exercise to see details 👈</p>
+    </div>
+  </ng-template>
+
+  <!-- RIGHT SECTION: Library (Desktop) -->
+  <div class="exercise-library desktop-only">
+    <div class="library-header">
+      <h2>Exercises</h2>
+      <mat-form-field appearance="fill" class="search-field">
+        <mat-label>Search</mat-label>
+        <input matInput [(ngModel)]="searchQuery" (input)="search()" />
+      </mat-form-field>
+    </div>
+
+    <div class="exercise-list">
+      <mat-nav-list>
+        <mat-list-item
+          *ngFor="let ex of exercises"
+          (click)="selectExercise(ex)"
+          [class.selected]="selectedExercise?.id === ex.id"
+        >
+          {{ ex.name }}
+        </mat-list-item>
+      </mat-nav-list>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,73 @@
+.toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.app-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.nav-links {
+  display: flex;
+  gap: 8px;
+}
+
+.menu-button {
+  display: none;
+}
+
+.profile-button {
+  margin-left: 8px;
+}
+
+.nav-links .active {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+/* 📱 Mobile */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+
+  .menu-button {
+    display: inline-flex;
+  }
+
+  .app-title {
+    flex-grow: 1;
+    text-align: center;
+  }
+}
+
+.sidenav-container {
+  /* ⚡ Instead of hiding it with pointer-events, position it */
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;      /* full viewport height */
+  width: 100vw;       /* full viewport width */
+  z-index: 999;       /* just below toolbar */
+  background: transparent;
+}
+
+.sidenav {
+  width: 200px;
+}
+
+mat-sidenav {
+  pointer-events: auto; /* re-enable inside sidenav */
+}

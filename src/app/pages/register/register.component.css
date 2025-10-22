@@ -1,0 +1,198 @@
+/* Header height assumed 56px; adjust if different */
+.header {
+ min-width: 260px;
+  width: 100%;
+  padding:0.5rem 0.5rem ;    /* less vertical padding */
+  display: flex;
+  align-items: center;       /* vertically center logo and nav */
+  background: #000;
+  height: 56px;  
+}
+
+.logo {
+  padding-left: 1rem;
+  padding-top: 1rem;
+  height: 120px;              /* increase to desired size */
+  width: auto;               /* maintain aspect */
+  object-fit: contain;       /* safe fit if a fixed width is later added */
+  /* display: block;            remove inline gaps */
+}
+
+/* Wrapper for split layout */
+.register-page {
+  background: #F5F5F5;
+  min-width: 260px;
+  display: flex;
+  min-height: calc(100vh - 72px); /* full height minus header */
+}
+
+/* Columns: allow to grow and shrink evenly, base 0 to avoid overflow math */
+.register-right{
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items:flex-start;
+  padding-top: 4rem;
+  padding-right: 1rem ;
+  padding-left: 1rem;
+  
+}
+
+.register-left{
+  flex: 1;
+  display: flex;
+  align-items: stretch;    /* make child fill height */
+  justify-content: stretch;
+  padding: 0;              /* remove inner padding so image can truly fill */
+  overflow: hidden;        /* hide any overflow from cover crop */
+  
+}
+
+
+.register-container {
+  max-width: 400px;
+  min-width: 260px;
+  width: 100%;  
+  padding: 2rem;
+  background:#ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.register-left img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;      /* fill and crop without distortion */
+  display: block;  /* avoid inline gaps */
+  border-radius:4 rem ;        
+}
+
+mat-form-field {
+  display: block;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+/* Button */
+button[mat-raised-button] {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 16px;
+  margin-top: 0.5rem;
+}
+
+/* Error messages */
+.error-message {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background: #fdecea;
+  color: #d32f2f;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  border-radius: 6px;
+  border: 1px solid #f5c2c0;
+}
+
+.error {
+  font-size: 13px;
+  color: #d32f2f;
+  margin-bottom: 0.5rem;
+  text-align: left;
+}
+
+/* Signup text */
+p {
+  margin-top: 1.5rem;
+  font-size: 14px;
+  color: #555;
+}
+
+p a {
+  color: #1976d2;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+p a:hover {
+  color: #0d47a1;
+  text-decoration: underline;
+}
+
+.footer {
+  width: 100%;
+  background: #0f0f0f;
+  color: #eaeaea;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.75rem 1rem;        /* compact height */
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.footer-status {
+  margin: 0;
+  font-size: 14px;
+  color: #ffd166;               /* subtle warning tone */
+}
+
+.footer-links {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.footer-links a {
+  color: #cfcfcf;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.footer-links a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+.footer-copy {
+  margin: 0;
+  font-size: 12px;
+  color: #a8a8a8;
+}
+
+/* Keep footer readable on small screens */
+@media (max-width: 600px) {
+  .footer-inner { padding: 0.75rem 0.75rem; }
+  .footer-links { gap: 0.75rem; }
+}
+
+
+/* Responsive */
+@media (max-width: 900px) {
+  .header { height: 48px; }
+  .logo { height: 100px; }
+  .register-page {
+    flex-direction: column;
+  }
+
+  .register-left {
+    display: none; /* hide illustration on smaller screens */
+  }
+
+  .register-container {
+    margin: 50px 20px;
+  }
+}
+
+@media (max-width: 500px) {
+  .register-container {
+    padding: 1.5rem;
+  }
+}

@@ -1,0 +1,11 @@
+  <div class="workout-box" [class.minimized]="minimized">
+    <div class="header">
+      <span>Active Workout</span>
+      <button mat-button (click)="minimize.emit()"> {{ minimized ? 'Maximize' : 'Minimize' }} </button>
+    </div>
+    <div class="content" *ngIf="!minimized">
+      <p>Workout in progress...</p>
+      <button mat-raised-button color="warn">Discard</button>
+      <button mat-raised-button color="primary">Finish</button>
+    </div>
+  </div>

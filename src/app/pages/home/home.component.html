@@ -1,0 +1,10 @@
+<div class="home-container">
+  <h2>Welcome back : {{ username }}!</h2>
+  <button mat-raised-button color="accent" (click)="startWorkout()">Start Workout</button>
+
+  <app-active-workout
+    *ngIf="activeWorkoutVisible"
+    (minimize)="toggleWorkoutMinimize()"
+    [minimized]="isWorkoutMinimized">
+  </app-active-workout>
+</div>

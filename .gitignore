@@ -40,3 +40,81 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Angular build output
+/dist
+/.angular/cache
+/.angular/
+!/src/assets
+
+# Compiled output
+/main.bundle.js
+/main.bundle.map
+/polyfills.bundle.js
+/polyfills.bundle.map
+/styles.bundle.css
+/styles.bundle.map
+
+# Dependency directories
+/node_modules
+/bower_components
+
+# Environment files
+src/environments/environment*.ts
+
+# IDEs and editors
+.idea
+.vscode
+*.sublime-project
+*.sublime-workspace
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# Logs and debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Coverage directory used by tests
+/coverage
+
+# Temporary files
+/tmp
+/out-tsc
+/.sass-cache
+/.nyc_output
+
+# Miscellaneous build tool outputs
+/.pnp*
+.pnp.js
+.yarn-integrity
+
+# TypeScript
+*.tsbuildinfo
+
+# Firebase
+.firebase/
+
+# Local environment
+.env
+.env.local
+
+# Angular Universal SSR
+/server/dist
+
+# Mac and Windows specific
+*.psd
+ehthumbs.db
+Icon?
+
+# Generated documentation
+/docs

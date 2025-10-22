@@ -1,0 +1,42 @@
+.exercise-page {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  height: calc(100vh - 64px); /* leave space for fixed header */
+  box-sizing: border-box;
+}
+
+.left-section {
+  flex: 2;
+  background: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-y: auto;
+  height: 100%;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.right-section {
+  flex: 1;
+  background: #f8f8f8;
+  padding: 1rem;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+.exercise-list {
+  margin-top: 0.5rem;
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+.exercise-item {
+  padding: 0.5rem;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+}
+
+.exercise-item:hover {
+  background-color: rgba(0,0,0,0.05);
+}

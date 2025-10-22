@@ -1,0 +1,131 @@
+<!-- <div class="register-container">
+    <h2>Register</h2>
+    <mat-form-field>
+      <input matInput placeholder="Username" [(ngModel)]="username">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Email" [(ngModel)]="email">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Password" type="password" [(ngModel)]="password">
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="onRegister()">Signup</button>
+    <p>Already have an account? <a routerLink="/login">Login</a></p>
+</div> -->
+
+<!-- ^^^^^^^^^^^^^^^^^ above is version 1 -->
+<!-- Header with logo -->
+<header class="header">
+  <img src="/assets/white-ironlog.png" alt="Logo" class="logo">
+</header>
+
+<!-- Split page layout -->
+<div class="register-page">
+  <!-- Left side: register form -->
+  <div class="register-right">
+    <div class="register-container">
+      <h2>Register</h2>
+
+      <form #registerForm="ngForm" (ngSubmit)="onRegister(registerForm)">
+        <!-- Username -->
+        <mat-form-field appearance="fill">
+          <mat-label>Username</mat-label>
+          <input
+            matInput
+            name="username"
+            [(ngModel)]="username"
+            required
+            minlength="3"
+            #usernameModel="ngModel">
+        </mat-form-field>
+        <div *ngIf="usernameModel.invalid && usernameModel.touched" class="error">
+          Username must be at least 3 characters.
+        </div>
+
+        <!-- Email -->
+        <mat-form-field appearance="fill">
+          <mat-label>Email</mat-label>
+          <input
+            matInput
+            name="email"
+            [(ngModel)]="email"
+            required
+            email
+            #emailModel="ngModel">
+        </mat-form-field>
+        <div *ngIf="emailModel.invalid && emailModel.touched" class="error">
+          Please enter a valid email.
+        </div>
+
+        <!-- Password -->
+        <mat-form-field>
+          <input
+            matInput
+            [type]="password_hide ? 'password' : 'text'"
+            placeholder="Password"
+            type="password"
+            [(ngModel)]="password"
+            name="password"
+            required
+            minlength="8"
+            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$"
+            #passwordModel="ngModel">
+            <button
+              mat-icon-button
+              matSuffix
+              (click)="password_hide = !password_hide"
+              [attr.aria-label]="'Hide password'"
+              [attr.aria-pressed]="!password_hide"
+              type="button"
+            >
+              <mat-icon>{{password_hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+        </mat-form-field>
+
+        <div *ngIf="passwordModel.invalid && passwordModel.touched" class="error">
+          <div *ngIf="passwordModel.errors?.['required']">Password is required.</div>
+          <div *ngIf="passwordModel.errors?.['minlength']">Password must be at least 8 characters.</div>
+          <div *ngIf="passwordModel.errors?.['pattern']">
+            Password must contain at minimum - a uppercase, a lowercase, a number, and a special character.
+          </div>
+        </div>
+
+        <!-- Submit -->
+        <button mat-raised-button color="primary" type="submit" [disabled]="registerForm.invalid">
+          Register
+        </button>
+
+        <!-- Server error -->
+        <div *ngIf="errorMessage" class="error-message">
+          {{ errorMessage }}
+          <button mat-icon-button (click)="dismissError()" aria-label="Dismiss">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+
+        <p>Already have an account? <a routerLink="/login">Login</a></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Right side: image / decoration -->
+  <div class="register-left">
+      <img src="assets/1.png" alt="Illustration">
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-inner">
+    <p class="footer-status">🚧 Work in progress: This app is under active development.</p>
+    <nav class="footer-links">
+      <a routerLink="/about">About</a>
+      <a routerLink="/privacy">Privacy</a>
+      <a routerLink="/terms">Terms</a>
+      <a routerLink="/contact">Contact</a>
+    </nav>
+    <p class="footer-copy">© {{ currentYear || 2025 }} IronLog • Lift Heavy. Be Strong. Track Smarter.</p>
+  </div>
+</footer>
+
+

@@ -1,0 +1,92 @@
+<!-- Header with logo -->
+<header class="header">
+  <img src="/assets/white-ironlog.png" alt="Logo" class="logo">
+</header>
+
+<!-- Split page layout -->
+<div class="login-page">
+  
+
+  <!-- Left side: login form -->
+  <div class="login-left">
+    <div class="login-container">
+      <h2>Login</h2>
+
+      <form #loginForm="ngForm" (ngSubmit)="onLogin()">
+        <mat-form-field>
+          <input
+            matInput
+            placeholder="Email"
+            [(ngModel)]="email"
+            name="email"
+            required
+            email
+            #emailModel="ngModel">
+        </mat-form-field>
+        <div *ngIf="emailModel.invalid && emailModel.touched" class="error">
+          Please enter a valid email.
+        </div>
+
+        <mat-form-field>
+          <input
+            [type]="password_hide ? 'password' : 'text'"
+            matInput
+            placeholder="Password"
+            type="password"
+            [(ngModel)]="password"
+            name="password"
+            required
+            minlength="6"
+            #passwordModel="ngModel">
+                        <button
+              mat-icon-button
+              matSuffix
+              (click)="password_hide = !password_hide"
+              [attr.aria-label]="'Hide password'"
+              [attr.aria-pressed]="!password_hide"
+              type="button"
+            >
+              <mat-icon>{{password_hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+        </mat-form-field>
+        <div *ngIf="passwordModel.invalid && passwordModel.touched" class="error">
+          Password must be at least 6 characters.
+        </div>
+
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="loginForm.invalid">
+          Login
+        </button>
+
+        <div *ngIf="errorMessage" class="error-message">
+          {{ errorMessage }}
+        </div>
+
+        <p>Don't have an account? <a routerLink="/register">Signup</a></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Right side: image / decoration -->
+  <div class="login-right">
+    <img src="assets/2.png" alt="Illustration">
+  </div>
+
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-inner">
+    <p class="footer-status">🚧 Work in progress: This app is under active development.</p>
+    <nav class="footer-links">
+      <a href="/about">About</a>
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+      <a href="/contact">Contact</a>
+    </nav>
+    <p class="footer-copy">© {{ currentYear || 2025 }} IronLog • Lift Heavy. Be Strong. Track Smarter.</p>
+  </div>
+</footer>

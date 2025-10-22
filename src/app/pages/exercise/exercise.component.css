@@ -1,0 +1,189 @@
+/* Page layout */
+.exercise-page {
+  display: flex;
+  flex-direction: row;
+  gap: 1.25rem;
+  padding: 1.25rem;
+  box-sizing: border-box;
+}
+
+/* -------- Left: Details -------- */
+.exercise-details {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow-y: auto;
+  color: var(--text);
+}
+
+/* Card common */
+.exercise-card,
+.summary-card {
+  background: var(--panel-bg);
+  border-radius: 12px;
+  padding: 1rem 1.1rem;
+  box-shadow: 0 6px 18px var(--shadow);
+  border: 1px solid #eaeaea;
+}
+
+.exercise-card h2 {
+  margin: 0 0 0.25rem 0;
+  color: var(--accent);
+  font-size: 1.35rem;
+  letter-spacing: 0.2px;
+}
+
+.exercise-card p {
+  margin: 0;
+  color: var(--muted-text);
+  line-height: 1.45;
+}
+
+/* Summary grid */
+.summary-card h3 {
+  margin: 0 0 0.6rem 0;
+  font-size: 1rem;
+  color: var(--text);
+}
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.5rem;
+}
+.summary-grid div{
+  background: var(--muted-bg);
+  padding: 0.5rem;
+  text-align: center;
+  border-radius: 8px;
+  border: 1px solid #eee;
+}
+.summary-grid strong{
+  display:block;
+  color: var(--accent);
+  font-size: 1.05rem;
+}
+
+/* No selection placeholder */
+.no-selection {
+  flex: 1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-style:italic;
+  color:var(--muted-text);
+}
+
+/* -------- Right: Library (desktop) -------- */
+.exercise-library {
+  flex: 1;
+  max-width: 300px;
+  background: var(--panel-bg);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  padding: 0.85rem;
+  box-shadow: 0 6px 18px var(--shadow);
+  border: 1px solid #eaeaea;
+}
+
+.library-header {
+  display:flex;
+  flex-direction:column;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+.library-header h2 {
+  margin:0;
+  font-size:1.05rem;
+  color: var(--text);
+  font-weight:600;
+}
+
+/* search field appearance */
+.search-field { width:100%; }
+
+/* scrollable list */
+.exercise-list {
+  margin-top: 0.25rem;
+  overflow-y: auto;
+  flex-grow: 1;
+  max-height: calc(100vh - 220px);
+  padding-right: 6px; /* room for scrollbar */
+}
+
+/* list items */
+mat-list-item {
+  padding: 0.6rem 0.75rem;
+  border-radius: 8px;
+  transition: background 0.15s ease, color 0.15s ease;
+  color: var(--text);
+}
+mat-list-item:hover{
+  background: #f7f7f7;
+}
+
+/* selected state — black background, white text */
+.selected {
+  background-color: var(--selected-bg) !important;
+  color: var(--selected-text) !important;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+/* subtle divider style */
+mat-divider {
+  background: #eee;
+}
+
+/* Mobile dropdown appearance */
+.mobile-header {
+  display:none;
+}
+
+/* Adjustments for smaller screens */
+@media (max-width: 768px) {
+  .exercise-page {
+    flex-direction: column;
+    padding: 0.9rem;
+  }
+
+  .desktop-only { display: none; }
+  .mobile-only { display: block; }
+
+  /* mobile header (dropdown + title) */
+  .mobile-header {
+    background: var(--panel-bg);
+    padding: 0.7rem;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px var(--shadow);
+    margin-bottom: 0.9rem;
+    border: 1px solid #eaeaea;
+  }
+  .page-title {
+    margin: 0 0 0.6rem 0;
+    font-size: 1.1rem;
+    color: var(--text);
+  }
+  .mobile-select { width:100%; }
+
+  /* details cards scale down */
+  .exercise-card, .summary-card {
+    padding: 0.85rem;
+  }
+  .exercise-card h2 { font-size: 1.15rem; }
+
+  /* library dropdown is used instead of full list -- but if list shown: */
+  .exercise-library {
+    max-width: 100%;
+    padding: 0.6rem;
+    margin-bottom: 0.6rem;
+    box-shadow: none;
+    border: 1px solid #eee;
+  }
+  .exercise-list { max-height: 40vh; }
+}
+
+/* Optional: nicer scrollbar for desktop */
+.exercise-list::-webkit-scrollbar { width: 8px; }
+.exercise-list::-webkit-scrollbar-thumb { background: #d0d0d0; border-radius: 6px; }

@@ -1,0 +1,50 @@
+<!-- ✅ Fixed Toolbar -->
+<mat-toolbar color="primary" class="toolbar">
+  <button mat-icon-button (click)="drawer.toggle()" class="menu-button">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <span class="app-title">IRONLOG</span>
+  <span class="spacer"></span>
+
+  <!-- Desktop navigation -->
+  <nav class="nav-links">
+    <button mat-button routerLink="/home" routerLinkActive="active">Home</button>
+    <button mat-button routerLink="/exercise" routerLinkActive="active">Exercise</button>
+    <button mat-button routerLink="/routine" routerLinkActive="active">Routine</button>
+    <button mat-button routerLink="/workout" routerLinkActive="active">Workout</button>
+  </nav>
+
+  <!-- Profile dropdown -->
+  <button mat-icon-button [matMenuTriggerFor]="profileMenu" class="profile-button">
+    <mat-icon>account_circle</mat-icon>
+  </button>
+  <mat-menu #profileMenu="matMenu">
+    <button mat-menu-item routerLink="/settings">
+      <mat-icon>settings</mat-icon>
+      <span>Settings</span>
+    </button>
+    <button mat-menu-item (click)="logout()">
+      <mat-icon>logout</mat-icon>
+      <span>Logout</span>
+    </button>
+  </mat-menu>
+</mat-toolbar>
+
+<!-- ✅ Sidenav that overlays content -->
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" mode="over">
+    <mat-nav-list>
+      <a mat-list-item routerLink="/home" (click)="drawer.close()">Home</a>
+      <a mat-list-item routerLink="/home" (click)="drawer.close()">Home</a>
+      <a mat-list-item routerLink="/exercise" (click)="drawer.close()">Exercise</a>
+      <a mat-list-item routerLink="/routine" (click)="drawer.close()">Routine</a>
+      <a mat-list-item routerLink="/workout" (click)="drawer.close()">Workout</a>
+      <a mat-list-item routerLink="/settings" (click)="drawer.close()">Settings</a>
+      <a mat-list-item (click)="logout()">Logout</a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <!-- sidenav-content can stay empty because main content is in layout -->
+  <mat-sidenav-content></mat-sidenav-content>
+</mat-sidenav-container>
