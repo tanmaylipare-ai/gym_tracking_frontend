@@ -1,25 +1,50 @@
 <div class="exercise-page">
-  <!-- MOBILE: Dropdown Selector -->
-  <div class="mobile-only mobile-header">
-    <h2 class="page-title">Exercises</h2>
-    <mat-form-field appearance="fill" class="mobile-select">
-      <mat-label>Select Exercise</mat-label>
-      <mat-select
-        [(value)]="selectedExercise"
-        (selectionChange)="selectExercise($event.value)"
-      >
-        <mat-option *ngFor="let ex of exercises" [value]="ex">
+<div class="mobile-only mobile-header">
+  <h2 class="page-title">Exercises</h2>
+  <mat-form-field appearance="fill" class="mobile-select">
+  <mat-label>Select Exercise</mat-label>
+    <mat-select
+      [(value)]="selectedExercise"
+      (selectionChange)="selectExercise($event.value)"
+      panelClass="exercise-select-panel"
+    >
+      <mat-select-trigger>
+        {{ selectedExercise?.name || 'Select Exercise' }}
+      </mat-select-trigger>
+
+      <mat-option class="search-option" (click)="$event.stopPropagation()">
+          <input
+            type="text"
+            [(ngModel)]="mobileSearchQuery"
+            (click)="$event.stopPropagation()"
+            (input)="filterMobileDropdown()"
+            class="dropdown-search-input"
+            placeholder="Type here to search..."
+          />
+        </mat-option>
+
+        <mat-option
+          *ngFor="let ex of filteredMobileExercises"
+          [value]="ex"
+        >
           {{ ex.name }}
         </mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
+
+      <mat-option
+        *ngFor="let ex of filteredMobileExercises"
+        [value]="ex"
+      >
+        {{ ex.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
 
   <!-- LEFT SECTION: Details -->
   <div class="exercise-details" *ngIf="selectedExercise; else noSelection">
     <mat-card class="exercise-card">
-      <h2>{{ selectedExercise?.name }}</h2>
-      <p>{{ selectedExercise?.description || 'No description available.' }}</p>
+      <h2>{{ selectedExercise.name }}</h2>
+      <p>{{ selectedExercise.description || 'No description available.' }}</p>
     </mat-card>
 
     <mat-card *ngIf="exerciseSummary" class="summary-card">
