@@ -38,6 +38,9 @@ export class ExerciseComponent implements OnInit {
   // Autocomplete
   exerciseSearchControl = new FormControl('');
   filteredExercises$: Observable<Exercise[]> = of([]);
+    // Mobile search
+  mobileSearchQuery: string = '';
+  filteredMobileExercises: Exercise[] = [];
 
   constructor(private exerciseService: ExerciseService) {}
 
@@ -49,6 +52,7 @@ export class ExerciseComponent implements OnInit {
     this.exerciseService.listExercises(this.searchQuery).subscribe({
       next: (data) => {
         this.exercises = data;
+        this.filteredMobileExercises = [...this.exercises];
         this.filteredExercises$ = this.exerciseSearchControl.valueChanges.pipe(
           startWith(''),
           map(value => this._filter(value || ''))
@@ -57,6 +61,16 @@ export class ExerciseComponent implements OnInit {
       error: (err) => console.error(err)
     });
   }
+ filterMobileDropdown(): void {
+  const query = this.mobileSearchQuery.toLowerCase().trim();
+  if (query === '') {
+    this.filteredMobileExercises = [...this.exercises];
+  } else {
+    this.filteredMobileExercises = this.exercises.filter(ex =>
+      ex.name.toLowerCase().includes(query)
+    );
+  }
+}
 
   private _filter(value: string): Exercise[] {
     const filterValue = value.toLowerCase();

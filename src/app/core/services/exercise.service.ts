@@ -43,4 +43,11 @@ export class ExerciseService {
   getExerciseSummary(exerciseId: number): Observable<ExerciseSummary> {
     return this.http.get<ExerciseSummary>(`${this.base}/history/exercise/${exerciseId}/summary`);
   }
+  
+  addExerciseToWorkout(workoutId: number, exerciseId: number) {
+  return this.http.post<{ workout_exercise_id: number }>(
+    `${this.base}/workouts/${workoutId}/exercise?exercise_id=${exerciseId}`, {}
+  );
+}
+
 }

@@ -7,6 +7,43 @@
   box-sizing: border-box;
 }
 
+.exercise-select-panel .mat-mdc-select-panel {
+  max-height: 300px !important;
+  overflow-y: auto;
+}
+
+/* Make the search input at the top clean and fixed */
+.search-option {
+  cursor: default !important;
+  pointer-events: none; /* prevents accidental selection */
+  padding: 0 8px;
+}
+
+.search-option input {
+  pointer-events: auto; /* re-enable typing in the input */
+}
+
+.dropdown-search-input {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  background: white;
+  box-sizing: border-box;
+}
+
+.dropdown-search-input:focus {
+  outline: none;
+  border-color: #666;
+}
+
+.mobile-select {
+  width: 100%;
+}
+
+
+
 /* -------- Left: Details -------- */
 .exercise-details {
   flex: 2;
