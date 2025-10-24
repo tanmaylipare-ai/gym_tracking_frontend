@@ -1,68 +1,71 @@
 <div class="workout-container" *ngIf="!workout; else activeWorkout">
-  <h2>Start workout</h2>
+  <h2>Start Workout</h2>
   <button mat-raised-button color="primary" (click)="startWorkout()">Start New Workout</button>
 </div>
 
 <ng-template #activeWorkout>
   <div class="active-workout">
-    <h2>Workout In Progress</h2>
+    <div class="workout-header">
+      <h2>Workout In Progress</h2>
 
-    <div class="workout-controls">
-      <button mat-stroked-button color="warn" (click)="discardWorkout()">Discard</button>
-      <button mat-raised-button color="accent" (click)="completeWorkout()">Complete</button>
+      <div class="workout-controls">
+        <button mat-stroked-button color="warn" (click)="discardWorkout()">Discard</button>
+        <button mat-raised-button color="accent" (click)="completeWorkout()">Complete</button>
+      </div>
     </div>
 
-    <hr />
+    <!-- Add Exercise (Pinned to top) -->
+    <div class="add-exercise-section card">
+      <button mat-stroked-button color="primary" (click)="toggleExerciseSearch()">
+        {{ showExerciseSearch ? 'Hide Exercise Search' : 'Add Exercise' }}
+      </button>
 
-    <!-- Exercise Search Section -->
-    <div class="exercise-search">
-      <input
-        type="text"
-        placeholder="Search exercises..."
-        [(ngModel)]="searchQuery"
-        (input)="listExercises()"
-      />
-      <div class="exercise-list">
-        <div
-          *ngFor="let ex of exercises"
-          class="exercise-item"
-          (click)="addExercise(ex)"
-        >
-          <strong>{{ ex.name }}</strong>
-          <span *ngIf="ex.description">{{ ex.description }}</span>
+      <div class="exercise-search" *ngIf="showExerciseSearch">
+        <input
+          type="text"
+          placeholder="Search exercises..."
+          [formControl]="exerciseSearchControl"
+          class="dropdown-search-input"
+        />
+        <div class="exercise-list" *ngIf="filteredExercises$ | async as filtered">
+          <div
+            *ngFor="let ex of filtered"
+            class="exercise-item"
+            (click)="addExercise(ex)"
+          >
+            <strong>{{ ex.name }}</strong>
+            <span *ngIf="ex.description">{{ ex.description }}</span>
+          </div>
         </div>
       </div>
     </div>
 
-    <hr />
-
-    <!-- Current Workout Exercises -->
+    <!-- 🏋️‍♂️ Workout Exercises -->
     <div class="workout-exercises">
-      <div *ngFor="let ex of workoutExercises" class="workout-exercise">
-        <h3>{{ ex.name }}</h3>
+      <div *ngFor="let ex of workoutExercises" class="workout-exercise card">
+        <div class="exercise-header">
+          <h3>{{ ex.name }}</h3>
+          <button mat-icon-button color="warn" (click)="removeExercise(ex)" title="Remove exercise">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
 
+        <!-- Existing Sets -->
         <div class="set-list">
           <div class="set-item" *ngFor="let s of ex.sets">
             <span>{{ s.reps }} reps × {{ s.weight }} kg</span>
-            <button
-              mat-icon-button
-              color="warn"
-              (click)="removeSet(ex, s.id)"
-              title="Remove set"
-            >
+            <button mat-icon-button color="warn" (click)="removeSet(ex, s.id)">
               <mat-icon>delete</mat-icon>
             </button>
           </div>
         </div>
 
-        <button
-          mat-stroked-button
-          color="primary"
-          (click)="addSet(ex)"
-          class="add-set-btn"
-        >
-          Add Set
-        </button>
+        <!-- Add New Set Inline -->
+        <div class="add-set-inline">
+          <input type="number" placeholder="Reps" [(ngModel)]="ex.newSet.reps"/>
+          <input type="number" placeholder="Weight (kg)" [(ngModel)]="ex.newSet.weight"/>
+          <button mat-stroked-button color="primary" (click)="addSetInline(ex)">Add Set</button>
+        </div>
       </div>
     </div>
   </div>
