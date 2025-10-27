@@ -50,11 +50,11 @@
     <mat-card *ngIf="exerciseSummary" class="summary-card">
       <h3>Summary</h3>
       <div class="summary-grid">
-        <div><strong>{{ exerciseSummary.max_weight }}</strong><span>kg Max</span></div>
-        <div><strong>{{ exerciseSummary.reps_at_max_weight }}</strong><span>Reps Max</span></div>
-        <div><strong>{{ exerciseSummary.avg_reps }}</strong><span>Avg Reps</span></div>
-        <div><strong>{{ exerciseSummary.total_sets }}</strong><span>Total Sets</span></div>
-        <div><strong>{{ exerciseSummary.total_volume }}</strong><span>Total Volume</span></div>
+        <div><strong>{{ exerciseSummary.max_weight }}</strong><span>kg<br>Max Weight</span></div>
+        <div><strong>{{ exerciseSummary.reps_at_max_weight }}</strong><span>Reps<br>Max Weight</span></div>
+        <div><strong>{{ exerciseSummary.avg_reps }}</strong><span>Average<br>Reps</span></div>
+        <div><strong>{{ exerciseSummary.total_sets }}</strong><span>Total<br>Sets</span></div>
+        <div><strong>{{ exerciseSummary.total_volume }}</strong><span>kg<br>Total Volume</span></div>
         <div><span>Last:</span> {{ exerciseSummary.last_performed || 'Never' }}</div>
       </div>
     </mat-card>
