@@ -62,11 +62,31 @@
 
         <!-- Add New Set Inline -->
         <div class="add-set-inline">
-          <input type="number" placeholder="Reps" [(ngModel)]="ex.newSet.reps"/>
-          <input type="number" placeholder="Weight (kg)" [(ngModel)]="ex.newSet.weight"/>
+          <input type="number" min="1"placeholder="Reps" [(ngModel)]="ex.newSet.reps"/>
+          <input type="number" min="0" placeholder="Weight (kg)" [(ngModel)]="ex.newSet.weight"/>
           <button mat-stroked-button color="primary" (click)="addSetInline(ex)">Add Set</button>
         </div>
       </div>
     </div>
   </div>
 </ng-template>
+
+
+<!-- -------------------------popup summary -->
+ <!-- Workout Summary Popup -->
+<div class="workout-summary-backdrop" *ngIf="showSummary">
+  <div class="workout-summary-card">
+    <h2>Workout Summary</h2>
+    <div class="summary-details">
+      <p><strong>Total Volume:</strong> {{ summaryData?.totalVolume }} kg</p>
+      <p><strong>Total Sets:</strong> {{ summaryData?.totalSets }}</p>
+      <div *ngIf="summaryData?.newPRs?.length">
+        <h3>🏆 New Personal Bests:</h3>
+        <ul>
+          <li *ngFor="let pr of summaryData?.newPRs">{{ pr }}</li>
+        </ul>
+      </div>
+    </div>
+    <button mat-raised-button color="primary" (click)="closeSummary()">Close</button>
+  </div>
+</div>

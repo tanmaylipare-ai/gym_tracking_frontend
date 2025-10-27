@@ -1,29 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { debounceTime, Observable, of, startWith, switchMap } from 'rxjs';
-import { Exercise, ExerciseService } from '../../core/services/exercise.service';
+import { Exercise, GymService, SetEntry, Workout } from '../../core/services/gym_crud.service';
 
-interface Workout {
-  workout_id: number;
-  status: string;
-}
-
-interface WorkoutSet {
-  id: number;
-  reps: number;
-  weight: number;
-}
 
 interface WorkoutExercise {
   workout_exercise_id: number;
   exercise_id: number;
   name: string;
-  sets: WorkoutSet[];
-  newSet: { reps?: number; weight?: number }; // for inline input
+  sets: SetEntry[];
+  newSet: { reps?: number; weight?: number };
 }
 
 @Component({
@@ -40,22 +29,22 @@ interface WorkoutExercise {
   styleUrls: ['./workout.component.scss']
 })
 export class WorkoutComponent implements OnInit {
-  private base = 'http://localhost:8000';
-
   workout: Workout | null = null;
   workoutExercises: WorkoutExercise[] = [];
 
-  showExerciseSearch = false;
+  showSummary = false;
+  summaryData: { totalVolume: number; totalSets: number; newPRs: string[] } | null = null;
 
+  showExerciseSearch = false;
   exerciseSearchControl = new FormControl('');
   filteredExercises$: Observable<Exercise[]> = of([]);
 
-  constructor(private http: HttpClient, private exerciseService: ExerciseService) {}
+  constructor(private gymService: GymService) {}
 
   ngOnInit(): void {
     this.loadActiveWorkout();
 
-    // Setup filtered exercise dropdown
+    // live search setup
     this.filteredExercises$ = this.exerciseSearchControl.valueChanges.pipe(
       startWith(''),
       debounceTime(200),
@@ -63,12 +52,21 @@ export class WorkoutComponent implements OnInit {
     );
   }
 
+  // ===========================
+  // 🔹 Load Active Workout
+  // ===========================
   loadActiveWorkout() {
-    this.http.get<any>(`${this.base}/workouts/active`).subscribe({
+    this.gymService.getActiveWorkout().subscribe({
       next: (res) => {
-        if (res.active) {
-          this.workout = { workout_id: res.workout_id, status: res.status };
-          this.workoutExercises = res.exercises || [];
+        if (res && res.workout_id) {
+          this.workout = res;
+          this.workoutExercises = (res.exercises || []).map((e: any) => ({
+            workout_exercise_id: e.id,
+            exercise_id: e.exercise.id,
+            name: e.exercise.name,
+            sets: e.sets || [],
+            newSet: { reps: undefined, weight: undefined }
+          }));
         } else {
           this.workout = null;
         }
@@ -77,20 +75,24 @@ export class WorkoutComponent implements OnInit {
     });
   }
 
+  // ===========================
+  // 🔹 Exercise Search
+  // ===========================
   toggleExerciseSearch() {
-  this.showExerciseSearch = !this.showExerciseSearch;
-  if (!this.showExerciseSearch) {
-    this.exerciseSearchControl.setValue('');
-  }
+    this.showExerciseSearch = !this.showExerciseSearch;
+    if (!this.showExerciseSearch) this.exerciseSearchControl.setValue('');
   }
 
   searchExercises(query: string): Observable<Exercise[]> {
     if (!query.trim()) return of([]);
-    return this.exerciseService.listExercises(query);
+    return this.gymService.listExercises(query);
   }
 
+  // ===========================
+  // 🔹 Start / Complete / Discard
+  // ===========================
   startWorkout() {
-    this.http.post<any>(`${this.base}/workouts`, {}).subscribe({
+    this.gymService.startWorkout().subscribe({
       next: (res) => {
         this.workout = { workout_id: res.workout_id, status: res.status };
         this.workoutExercises = [];
@@ -105,26 +107,82 @@ export class WorkoutComponent implements OnInit {
     });
   }
 
+completeWorkout() {
+  if (!this.workout) return;
+
+  // Calculate summary data before sending completion
+  const allSets = this.workoutExercises.flatMap(e => e.sets);
+  const totalVolume = allSets.reduce((sum, s) => sum + s.weight * s.reps, 0);
+  const totalSets = allSets.length;
+
+  // Optional: Determine new PRs
+  // You can enhance this later by fetching previous max from backend.
+  const newPRs: string[] = [];
+  this.workoutExercises.forEach(ex => {
+    if (ex.sets.length > 0) {
+      const maxWeight = Math.max(...ex.sets.map(s => s.weight));
+      const topSet = ex.sets.find(s => s.weight === maxWeight);
+      if (topSet) {
+        newPRs.push(`${ex.name}: ${topSet.weight} kg × ${topSet.reps} reps`);
+      }
+    }
+  });
+
+  this.gymService.completeWorkout(this.workout.workout_id).subscribe({
+    next: () => {
+      this.summaryData = { totalVolume, totalSets, newPRs };
+      this.showSummary = true; // show popup
+      // keep workoutExercises in memory to show summary
+    },
+    error: (err) => console.error('Error completing workout:', err)
+  });
+}
+
+discardWorkout() {
+  if (!this.workout) return;
+
+  this.gymService.discardWorkout(this.workout.workout_id).subscribe({
+    next: () => {
+      // Clear data and reload the workout page state
+      this.workout = null;
+      this.workoutExercises = [];
+    },
+    error: (err) => console.error('Error discarding workout:', err)
+  });
+}
+
+closeSummary() {
+  this.showSummary = false;
+  this.summaryData = null;
+  // Reset to initial state (like discard)
+  this.workout = null;
+  this.workoutExercises = [];
+}
+
+  // ===========================
+  // 🔹 Manage Exercises
+  // ===========================
   addExercise(ex: Exercise) {
     if (!this.workout) return;
-    this.exerciseService.addExerciseToWorkout(this.workout.workout_id, ex.id).subscribe({
-      next: res => {
-      this.workoutExercises.push({
-        workout_exercise_id: res.workout_exercise_id,
-        exercise_id: ex.id,
-        name: ex.name,
-        sets: [],
-        newSet: { reps: undefined, weight: undefined } // initialize
-      });
-        this.exerciseSearchControl.setValue(''); // Clear search
+    this.gymService.addExerciseToWorkout(this.workout.workout_id, ex.id).subscribe({
+      next: (res) => {
+        this.workoutExercises.push({
+          workout_exercise_id: res.workout_exercise_id,
+          exercise_id: ex.id,
+          name: ex.name,
+          sets: [],
+          newSet: { reps: undefined, weight: undefined }
+        });
+        this.exerciseSearchControl.setValue('');
+        this.showExerciseSearch = false;
       },
-      error: (err) => console.error(err)
+      error: (err) => console.error('Error adding exercise:', err)
     });
   }
 
   removeExercise(ex: WorkoutExercise) {
     if (!this.workout) return;
-    this.http.delete(`${this.base}/workouts/${this.workout.workout_id}/exercise/${ex.workout_exercise_id}`)
+    this.gymService.removeExerciseFromWorkout(this.workout.workout_id, ex.workout_exercise_id)
       .subscribe({
         next: () => {
           this.workoutExercises = this.workoutExercises.filter(e => e.workout_exercise_id !== ex.workout_exercise_id);
@@ -133,78 +191,59 @@ export class WorkoutComponent implements OnInit {
       });
   }
 
+  // ===========================
+  // 🔹 Manage Sets
+  // ===========================
 addSetInline(ex: WorkoutExercise) {
-  if (!this.workout || !ex.newSet?.reps || !ex.newSet?.weight) return;
+  if (
+    !this.workout ||
+    ex.newSet?.reps == null ||
+    ex.newSet?.weight == null ||
+    ex.newSet.reps <= 0
+  ) return;
 
   const { reps, weight } = ex.newSet;
 
-  this.http.post<any>(
-    `${this.base}/workouts/${this.workout.workout_id}/exercise/${ex.workout_exercise_id}/sets?reps=${reps}&weight=${weight}`,
-    {}
-  ).subscribe({
+  this.gymService.addSet(this.workout.workout_id, ex.workout_exercise_id, reps, weight).subscribe({
     next: (res) => {
-      // Append new set locally (no full refresh)
-      const newSet: WorkoutSet = {
-        id: res.id, // assuming backend returns id of created set
-        reps,
-        weight
-      };
-      ex.sets.push(newSet);
-      ex.newSet = {}; // reset inputs
+      if (res && res.set_id) {
+        const newSet: SetEntry = { id: res.set_id, reps, weight };
+        ex.sets.push(newSet);
+      } else {
+        console.warn('No set_id returned from backend:', res);
+      }
+      ex.newSet = {}; // reset input
     },
     error: (err) => console.error('Error adding set:', err)
   });
 }
-
-removeSet(ex: WorkoutExercise, setId: number) {
-  if (!this.workout) return;
-  this.http.delete(`${this.base}/workouts/${this.workout.workout_id}/exercise/${ex.workout_exercise_id}/sets/${setId}`)
-    .subscribe({
+ 
+  removeSet(ex: WorkoutExercise, setId: number) {
+    if (!this.workout) return;
+    this.gymService.removeSet(this.workout.workout_id, ex.workout_exercise_id, setId).subscribe({
       next: () => {
-        // Remove set locally (no refresh)
         ex.sets = ex.sets.filter(s => s.id !== setId);
       },
       error: (err) => console.error('Error removing set:', err)
     });
-}
+  }
 
+  // ===========================
+  // 🔹 Refresh Active Workout
+  // ===========================
   refreshWorkout() {
     if (!this.workout) return;
-    this.http.get<any>(`${this.base}/workouts/${this.workout.workout_id}`).subscribe({
+    this.gymService.getActiveWorkout().subscribe({
       next: (res) => {
-      this.workoutExercises = (res.exercises || []).map((e: any) => ({
-        workout_exercise_id: e.id,
-        exercise_id: e.exercise.id,
-        name: e.exercise.name,
-        sets: e.sets || [],
-        newSet: { reps: undefined, weight: undefined } // initialize
-      }));
+        this.workoutExercises = (res.exercises || []).map((e: any) => ({
+          workout_exercise_id: e.id,
+          exercise_id: e.exercise.id,
+          name: e.exercise.name,
+          sets: e.sets || [],
+          newSet: { reps: undefined, weight: undefined }
+        }));
       },
       error: (err) => console.error('Error refreshing workout:', err)
-    });
-  }
-
-  completeWorkout() {
-    if (!this.workout) return;
-    this.http.post(`${this.base}/workouts/${this.workout.workout_id}/complete`, {}).subscribe({
-      next: () => {
-        alert('Workout completed!');
-        this.workout = null;
-        this.workoutExercises = [];
-      },
-      error: (err) => console.error('Error completing workout:', err)
-    });
-  }
-
-  discardWorkout() {
-    if (!this.workout) return;
-    this.http.delete<any>(`${this.base}/workouts/${this.workout.workout_id}`).subscribe({
-      next: () => {
-        alert('Workout discarded.');
-        this.workout = null;
-        this.workoutExercises = [];
-      },
-      error: (err) => console.error(err)
     });
   }
 }
