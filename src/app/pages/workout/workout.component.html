@@ -52,13 +52,45 @@
 
         <!-- Existing Sets -->
         <div class="set-list">
-          <div class="set-item" *ngFor="let s of ex.sets">
+        <div class="set-item" *ngFor="let s of ex.sets">
+          
+          <!-- Normal (View) Mode -->
+          <ng-container *ngIf="!s.editing; else editMode">
             <span>{{ s.reps }} reps × {{ s.weight }} kg</span>
-            <button mat-icon-button color="warn" (click)="removeSet(ex, s.id)">
-              <mat-icon>delete</mat-icon>
+            <div class="set-actions">
+              <button mat-icon-button color="primary" (click)="toggleEditSet(s)">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="removeSet(ex, s.id)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </ng-container>
+
+          <!-- Edit Mode -->
+          <ng-template #editMode>
+            <input type="number"
+                  min="1"
+                  [(ngModel)]="s.tempReps"
+                  placeholder="Reps"
+                  class="edit-input"
+                  (blur)="autoUpdateSet(ex, s)" />
+
+            <input type="number"
+                  min="0"
+                  [(ngModel)]="s.tempWeight"
+                  placeholder="Weight (kg)"
+                  class="edit-input"
+                  (blur)="autoUpdateSet(ex, s)" />
+
+            <!-- Optional small cancel button -->
+            <button mat-icon-button color="warn" (click)="toggleEditSet(s)">
+              <mat-icon>close</mat-icon>
             </button>
-          </div>
+          </ng-template>
+
         </div>
+      </div>
 
         <!-- Add New Set Inline -->
         <div class="add-set-inline">

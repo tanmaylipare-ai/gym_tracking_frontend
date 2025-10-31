@@ -8,7 +8,7 @@
   padding: 16px;
   background: var(--bg);
   color: var(--text);
-  min-height: 100vh;
+  min-height: calc(100vh - 64px);
 }
 
 /* Header section */
@@ -114,7 +114,7 @@
 
 .exercise-item span {
   font-size: 0.85rem;
-  color: var(--muted-text);
+  color: #0a0a0a;
 }
 
 /* ===============================
@@ -154,7 +154,18 @@
   padding: 8px 10px;
   margin-bottom: 6px;
   font-size: 0.95rem;
+  gap: 10px
 }
+
+.set-actions {
+  display: flex;
+  gap: 6px;
+}
+
+  .edit-input {
+    width: 80px;
+    padding: 4px;
+  }
 
 .set-item span {
   color: var(--text);
@@ -205,10 +216,17 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   text-align: center;
-  height: 100vh;
+
+  /* 🧭 Give some breathing space below the fixed header */
+  padding-top: 60px; /* roughly header height (64px) + extra space */
+
+  /* Remove full-screen centering */
+  min-height: calc(100vh - 64px - 120px);
+  background: var(--bg);
   color: var(--text);
+
+  animation: fadeInDown 0.3s ease-out;
 }
 
 .workout-container h2 {
@@ -258,6 +276,11 @@
   to { opacity: 1; transform: scale(1); }
 }
 
+/* @keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+} */
+
 
 /* ===============================
    SCROLLBARS
@@ -275,9 +298,14 @@
    RESPONSIVE
 =============================== */
 @media (max-width: 600px) {
+  .workout-container {
+    padding-top: 60px; /* for smaller header (56px) */
+  }
+
   .active-workout {
     padding: 10px;
     gap: 14px;
+    min-height: calc(100vh - 64px);
   }
 
   .add-set-inline {

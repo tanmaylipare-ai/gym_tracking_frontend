@@ -142,6 +142,14 @@ export class GymService {
     return this.http.delete(`${this.base}/workouts/${workoutId}/exercise/${weId}/sets/${setId}`);
   }
 
+  updateSet(workoutId: number, weId: number, setId: number, reps: number, weight: number): Observable<any> {
+  // Matching your query-param style (no backend changes needed)
+  return this.http.put(
+    `${this.base}/workouts/${workoutId}/exercise/${weId}/sets/${setId}?reps=${reps}&weight=${weight}`,
+    {}
+  );
+  }
+
   removeAllSets(workoutId: number, weId: number): Observable<any> {
     return this.http.delete(`${this.base}/workouts/${workoutId}/exercise/${weId}/sets`);
   }

@@ -3,6 +3,13 @@
   padding-top: 64px; /* desktop toolbar height */
     position: relative;
   z-index: 1;
+
+  animation: fadeInDown 0.3s ease-out;
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @media (max-width: 600px) {

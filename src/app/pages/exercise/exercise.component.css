@@ -5,6 +5,9 @@
   gap: 1.25rem;
   padding: 1.25rem;
   box-sizing: border-box;
+  height: calc(100vh - 64px);
+
+  overflow-y: hidden;
 }
 
 .exercise-select-panel .mat-mdc-select-panel {

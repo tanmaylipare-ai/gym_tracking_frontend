@@ -4,7 +4,12 @@
     <mat-icon>menu</mat-icon>
   </button>
 
-  <span class="app-title">IRONLOG</span>
+  <div class="logo-container">
+    <a routerLink="/home" routerLinkActive="active">
+      <img src="/black_logo.png" alt="IronLog logo" class="logo_header">
+    </a>
+  </div>
+  <span class="app-title" routerLink="/home" routerLinkActive="active">IRONLOG</span>
   <span class="spacer"></span>
 
   <!-- Desktop navigation -->
@@ -32,7 +37,7 @@
 </mat-toolbar>
 
 <!-- ✅ Sidenav that overlays content -->
-<mat-sidenav-container class="sidenav-container">
+<mat-sidenav-container class="sidenav-container" [class.active]="drawer.opened">
   <mat-sidenav #drawer class="sidenav" mode="over">
     <mat-nav-list>
       <a mat-list-item routerLink="/home" (click)="drawer.close()">Home</a>

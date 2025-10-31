@@ -10,6 +10,17 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
+.logo_header {
+  padding-top: 4px;
+  width: 64px;
+  height: 64px;
+}
+.logo_container {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .app-title {
   font-size: 1.4rem;
   font-weight: 600;
@@ -50,11 +61,15 @@
   .app-title {
     flex-grow: 1;
     text-align: center;
+    padding-left: 60px;
   }
+    .logo-container {
+    display: none;
+  }
+
 }
 
 .sidenav-container {
-  /* ⚡ Instead of hiding it with pointer-events, position it */
   position: fixed;
   top: 0;
   left: 0;
@@ -62,11 +77,19 @@
   width: 100vw;       /* full viewport width */
   z-index: 999;       /* just below toolbar */
   background: transparent;
+
+  pointer-events: none;
+}
+
+.sidenav-container.active {
+  pointer-events: auto;
 }
 
 .sidenav {
   width: 200px;
 }
+
+
 
 mat-sidenav {
   pointer-events: auto; /* re-enable inside sidenav */

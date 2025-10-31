@@ -5,14 +5,21 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { debounceTime, Observable, of, startWith, switchMap } from 'rxjs';
 import { Exercise, GymService, SetEntry, Workout } from '../../core/services/gym_crud.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 interface WorkoutExercise {
   workout_exercise_id: number;
   exercise_id: number;
   name: string;
-  sets: SetEntry[];
+  sets: EditableSet[];
   newSet: { reps?: number; weight?: number };
+}
+
+interface EditableSet extends SetEntry {
+  editing?: boolean;
+  tempReps?: number | null;
+  tempWeight?: number | null;
 }
 
 @Component({
@@ -26,7 +33,7 @@ interface WorkoutExercise {
     ReactiveFormsModule
   ],
   templateUrl: './workout.component.html',
-  styleUrls: ['./workout.component.scss']
+  styleUrls: ['./workout.component.css']
 })
 export class WorkoutComponent implements OnInit {
   workout: Workout | null = null;
@@ -39,7 +46,7 @@ export class WorkoutComponent implements OnInit {
   exerciseSearchControl = new FormControl('');
   filteredExercises$: Observable<Exercise[]> = of([]);
 
-  constructor(private gymService: GymService) {}
+  constructor(private gymService: GymService, private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.loadActiveWorkout();
@@ -50,6 +57,20 @@ export class WorkoutComponent implements OnInit {
       debounceTime(200),
       switchMap(value => this.searchExercises(value || ''))
     );
+  }
+
+  // 🔹 toggle set edit 
+    toggleEditSet(set: EditableSet) {
+    set.editing = !set.editing;
+    if (set.editing) {
+      // preload with existing values
+      set.tempReps = set.reps;
+      set.tempWeight = set.weight;
+    }else {
+    // optional: clear temps when leaving edit mode
+    set.tempReps = null;
+    set.tempWeight = null;
+  }
   }
 
   // ===========================
@@ -162,23 +183,34 @@ closeSummary() {
   // ===========================
   // 🔹 Manage Exercises
   // ===========================
-  addExercise(ex: Exercise) {
-    if (!this.workout) return;
-    this.gymService.addExerciseToWorkout(this.workout.workout_id, ex.id).subscribe({
-      next: (res) => {
-        this.workoutExercises.push({
-          workout_exercise_id: res.workout_exercise_id,
-          exercise_id: ex.id,
-          name: ex.name,
-          sets: [],
-          newSet: { reps: undefined, weight: undefined }
-        });
-        this.exerciseSearchControl.setValue('');
-        this.showExerciseSearch = false;
-      },
-      error: (err) => console.error('Error adding exercise:', err)
-    });
+addExercise(ex: Exercise) {
+  if (!this.workout) return;
+
+  // ✅ prevent duplicate exercises in the current workout
+  const alreadyExists = this.workoutExercises.some(
+    e => e.exercise_id === ex.id
+  );
+  if (alreadyExists) {
+    this.snackBar.open(`${ex.name} is already in your workout!`, 'OK', { duration: 2000 });
+    // console.warn(`Exercise "${ex.name}" is already added to this workout.`);
+    return; 
   }
+
+  this.gymService.addExerciseToWorkout(this.workout.workout_id, ex.id).subscribe({
+    next: (res) => {
+      this.workoutExercises.push({
+        workout_exercise_id: res.workout_exercise_id,
+        exercise_id: ex.id,
+        name: ex.name,
+        sets: [],
+        newSet: { reps: undefined, weight: undefined }
+      });
+      this.exerciseSearchControl.setValue('');
+      this.showExerciseSearch = false;
+    },
+    error: (err) => console.error('Error adding exercise:', err)
+  });
+}
 
   removeExercise(ex: WorkoutExercise) {
     if (!this.workout) return;
@@ -227,23 +259,50 @@ addSetInline(ex: WorkoutExercise) {
       error: (err) => console.error('Error removing set:', err)
     });
   }
+autoUpdateSet(ex: WorkoutExercise, set: EditableSet) {
+  if (!this.workout || set.tempReps == null || set.tempWeight == null) return;
 
+  // Validation: prevent invalid reps
+  if (set.tempReps <= 0) return;
+
+  // Only send update if something actually changed
+  if (set.tempReps === set.reps && set.tempWeight === set.weight) return;
+
+  const reps = set.tempReps;
+  const weight = set.tempWeight;
+
+  this.gymService.updateSet(
+    this.workout.workout_id,
+    ex.workout_exercise_id,
+    set.id,
+    reps,
+    weight
+  ).subscribe({
+    next: () => {
+      set.reps = reps;
+      set.weight = weight;
+      set.editing = false;
+    },
+    error: (err) => console.error('Auto-update failed:', err)
+  });
+}
+}
   // ===========================
   // 🔹 Refresh Active Workout
   // ===========================
-  refreshWorkout() {
-    if (!this.workout) return;
-    this.gymService.getActiveWorkout().subscribe({
-      next: (res) => {
-        this.workoutExercises = (res.exercises || []).map((e: any) => ({
-          workout_exercise_id: e.id,
-          exercise_id: e.exercise.id,
-          name: e.exercise.name,
-          sets: e.sets || [],
-          newSet: { reps: undefined, weight: undefined }
-        }));
-      },
-      error: (err) => console.error('Error refreshing workout:', err)
-    });
-  }
-}
+//   refreshWorkout() {
+//     if (!this.workout) return;
+//     this.gymService.getActiveWorkout().subscribe({
+//       next: (res) => {
+//         this.workoutExercises = (res.exercises || []).map((e: any) => ({
+//           workout_exercise_id: e.id,
+//           exercise_id: e.exercise.id,
+//           name: e.exercise.name,
+//           sets: e.sets || [],
+//           newSet: { reps: undefined, weight: undefined }
+//         }));
+//       },
+//       error: (err) => console.error('Error refreshing workout:', err)
+//     });
+//   }
+// }
