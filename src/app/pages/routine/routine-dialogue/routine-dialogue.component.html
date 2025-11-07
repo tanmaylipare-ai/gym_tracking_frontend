@@ -1,0 +1,26 @@
+<h2 mat-dialog-title>{{ data.isEditing ? 'Edit Routine' : 'Create New Routine' }}</h2>
+
+<mat-dialog-content>
+  <mat-form-field appearance="outline" class="routine-input">
+    <mat-label>Routine Name</mat-label>
+    <input matInput [(ngModel)]="name" />
+  </mat-form-field>
+
+  <h4>Select Exercises</h4>
+  <div class="exercise-list">
+    <div
+      *ngFor="let ex of data.allExercises"
+      class="exercise-item"
+      [class.selected]="isSelected(ex)"
+      (click)="toggleExercise(ex)">
+      {{ ex.name }}
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancel()">Cancel</button>
+  <button mat-raised-button color="accent" (click)="save()">
+    {{ data.isEditing ? 'Update' : 'Save' }}
+  </button>
+</mat-dialog-actions>

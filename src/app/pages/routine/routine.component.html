@@ -1,2 +1,33 @@
+<div class="routine-page">
 
-<p>routine works!</p>
+  <div class="header">
+    <h2>Your Routines</h2>
+    <button mat-raised-button color="accent" (click)="startCreating()">+ New Routine</button>
+  </div>
+
+  <!-- Routine List -->
+  <div *ngIf="routines.length > 0; else noRoutines" class="routine-list">
+    <mat-card *ngFor="let r of routines" class="routine-card">
+      <div class="routine-info">
+        <h3>{{ r.name }}</h3>
+        <p>{{ r.exercise_count || 0 }} exercises</p>
+      </div>
+
+      <div class="routine-actions">
+        <button mat-icon-button color="primary" (click)="startWorkout(r.id)">
+          <mat-icon>play_arrow</mat-icon>
+        </button>
+        <button mat-icon-button color="accent" (click)="editRoutine(r)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="deleteRoutine(r.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </mat-card>
+  </div>
+
+  <ng-template #noRoutines>
+    <p class="empty-text">No routines yet. Create your first one!</p>
+  </ng-template>
+</div>

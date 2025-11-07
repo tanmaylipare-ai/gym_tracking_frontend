@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { HeaderComponent } from "./components/header/header.component";
+import { ThemeService } from './core/services/theme.service';
 
 @Component({
   selector: 'app-root',
@@ -10,5 +11,8 @@ import { HeaderComponent } from "./components/header/header.component";
   styleUrl: './app.component.css'
 })
 export class AppComponent {
+  constructor(private theme: ThemeService) {
+    this.theme.initTheme();
+  }
   title = 'IronLog';
 }

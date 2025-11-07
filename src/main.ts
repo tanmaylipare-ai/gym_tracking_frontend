@@ -17,15 +17,14 @@ import { MainLayoutComponent } from './app/main-layout/main-layout.component';
 
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from './app/core/services/auth.intercepter';
+import { AboutmeComponent } from './app/pages/aboutme/aboutme.component';
 
 bootstrapApplication(AppComponent, {
   providers: [provideHttpClient(withInterceptors([authInterceptor])),
     provideRouter([ 
-      { path: '', redirectTo: '/login', pathMatch: 'full' },
-
-      // ❌ No header for these routes
-      { path: 'login', component: LoginComponent },
-      { path: 'register', component: RegisterComponent },
+    { path: 'login', component: LoginComponent },
+    { path: 'register', component: RegisterComponent },
+    { path: 'me', component: AboutmeComponent },
 
       // ✅ Protected routes under MainLayout
       {
@@ -37,9 +36,12 @@ bootstrapApplication(AppComponent, {
           { path: 'profile', component: ProfileComponent },
           { path: 'routine', component: RoutineComponent },
           { path: 'exercise', component: ExerciseComponent },
-          { path: 'workout', component: WorkoutComponent }
+          { path: 'workout', component: WorkoutComponent },
+          { path: '', redirectTo: 'home', pathMatch: 'full' } // default after login
         ]
-      }
+      },
+            // Wildcard (unknown paths)
+      { path: '**', redirectTo: 'login' }
     ]),
     importProvidersFrom(BrowserAnimationsModule, HttpClientModule)
   ]

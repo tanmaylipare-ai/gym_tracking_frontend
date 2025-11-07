@@ -1,131 +1,170 @@
-<!-- <div class="register-container">
-    <h2>Register</h2>
-    <mat-form-field>
-      <input matInput placeholder="Username" [(ngModel)]="username">
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput placeholder="Email" [(ngModel)]="email">
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput placeholder="Password" type="password" [(ngModel)]="password">
-    </mat-form-field>
-    <button mat-raised-button color="primary" (click)="onRegister()">Signup</button>
-    <p>Already have an account? <a routerLink="/login">Login</a></p>
-</div> -->
+<div 
+  class="flex flex-col min-h-[100dvh] 
+         bg-[url('/assets/gym-equipment-background-landscape_26727090.jpg')] 
+         bg-cover bg-center bg-no-repeat 
+         relative">
 
-<!-- ^^^^^^^^^^^^^^^^^ above is version 1 -->
-<!-- Header with logo -->
-<header class="header">
-  <img src="/assets/white-ironlog.png" alt="Logo" class="logo">
-</header>
+  <!-- Global Overlays -->
+  <div class="absolute inset-0 backdrop-blur-[2px] bg-black/40"></div>
+  <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/60"></div>
 
-<!-- Split page layout -->
-<div class="register-page">
-  <!-- Left side: register form -->
-  <div class="register-right">
-    <div class="register-container">
-      <h2>Register</h2>
+  <!-- Header -->
+  <header class="relative w-full h-14 sm:h-16 flex items-center justify-between px-6
+                 bg-black/60 backdrop-blur-lg border-b border-white/10 z-20">
 
-      <form #registerForm="ngForm" (ngSubmit)="onRegister(registerForm)">
+    <img src="assets/dumbbell-white.png" alt="IronLog" class="h-8 sm:h-9 object-contain select-none invert" />
+    <button (click)="toggleTheme()"
+      class="relative w-9 h-9 flex items-center justify-center rounded-lg
+             hover:bg-white/10 transition-all overflow-hidden">
+      <!-- Sun -->
+      <svg class="absolute w-6 h-6 transition-all duration-500"
+        [class.rotate-0]="!isDark"
+        [class.rotate-90]="isDark"
+        [class.scale-100]="!isDark"
+        [class.scale-0]="isDark"
+        xmlns="http://www.w3.org/2000/svg" fill="none"
+        viewBox="0 0 24 24" stroke="white">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 3v1m0 16v1m8.66-8.66h-1M4.34 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+      </svg>
+
+      <!-- Moon -->
+      <svg class="absolute w-6 h-6 transition-all duration-500"
+        [class.rotate-180]="!isDark"
+        [class.rotate-0]="isDark"
+        [class.scale-0]="!isDark"
+        [class.scale-100]="isDark"
+        xmlns="http://www.w3.org/2000/svg" fill="none"
+        viewBox="0 0 24 24" stroke="white">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+      </svg>
+    </button>
+
+  </header>
+
+  <!-- Register Area -->
+  <div class="relative flex-grow flex justify-center items-center pt-14 sm:pt-16 p-6 z-10">
+
+    <div class="w-full max-w-md bg-bg/10  backdrop-blur-xl 
+                p-6 rounded-2xl shadow-lg border border-white/20">
+
+      <h2 class="text-2xl font-semibold text-white mb-5 text-center">Register</h2>
+
+      <form #registerForm="ngForm" (ngSubmit)="onRegister(registerForm)" class="space-y-4">
+
         <!-- Username -->
-        <mat-form-field appearance="fill">
-          <mat-label>Username</mat-label>
-          <input
-            matInput
-            name="username"
-            [(ngModel)]="username"
-            required
-            minlength="3"
-            #usernameModel="ngModel">
-        </mat-form-field>
-        <div *ngIf="usernameModel.invalid && usernameModel.touched" class="error">
-          Username must be at least 3 characters.
-        </div>
+        <input
+          class="w-full px-3 py-2 rounded-lg border border-border/20
+                 focus:ring-2 focus:ring-accent/40 outline-none 
+                 bg-white/10 text-white placeholder:text-white/70"
+          placeholder="Username"
+          name="username"
+          [(ngModel)]="username"
+          required minlength="3"
+          #usernameModel="ngModel"
+        />
+        <p *ngIf="usernameModel.invalid && usernameModel.touched"
+           class="text-red-300 text-sm -mt-2">Username must be at least 3 characters.</p>
+
 
         <!-- Email -->
-        <mat-form-field appearance="fill">
-          <mat-label>Email</mat-label>
-          <input
-            matInput
-            name="email"
-            [(ngModel)]="email"
-            required
-            email
-            #emailModel="ngModel">
-        </mat-form-field>
-        <div *ngIf="emailModel.invalid && emailModel.touched" class="error">
-          Please enter a valid email.
-        </div>
+        <input
+          class="w-full px-3 py-2 rounded-lg border border-border/20
+                 focus:ring-2 focus:ring-accent/40 outline-none 
+                 bg-white/10 text-white placeholder:text-white/70"
+          placeholder="Email"
+          type="email"
+          name="email"
+          [(ngModel)]="email"
+          required email
+          #emailModel="ngModel"
+        />
+        <p *ngIf="emailModel.invalid && emailModel.touched"
+           class="text-red-300 text-sm -mt-2">Please enter a valid email.</p>
+
 
         <!-- Password -->
-        <mat-form-field>
+        <div class="relative">
           <input
-            matInput
+            class="w-full px-3 py-2 rounded-lg border border-border/20
+                   focus:ring-2 focus:ring-accent/40 outline-none 
+                   bg-white/10 text-white placeholder:text-white/70"
             [type]="password_hide ? 'password' : 'text'"
             placeholder="Password"
-            type="password"
-            [(ngModel)]="password"
             name="password"
-            required
-            minlength="8"
+            [(ngModel)]="password"
+            required minlength="8"
             pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$"
-            #passwordModel="ngModel">
-            <button
-              mat-icon-button
-              matSuffix
-              (click)="password_hide = !password_hide"
-              [attr.aria-label]="'Hide password'"
-              [attr.aria-pressed]="!password_hide"
-              type="button"
-            >
-              <mat-icon>{{password_hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-            </button>
-        </mat-form-field>
+            #passwordModel="ngModel"
+          />
 
-        <div *ngIf="passwordModel.invalid && passwordModel.touched" class="error">
-          <div *ngIf="passwordModel.errors?.['required']">Password is required.</div>
-          <div *ngIf="passwordModel.errors?.['minlength']">Password must be at least 8 characters.</div>
-          <div *ngIf="passwordModel.errors?.['pattern']">
-            Password must contain at minimum - a uppercase, a lowercase, a number, and a special character.
-          </div>
-        </div>
-
-        <!-- Submit -->
-        <button mat-raised-button color="primary" type="submit" [disabled]="registerForm.invalid">
-          Register
-        </button>
-
-        <!-- Server error -->
-        <div *ngIf="errorMessage" class="error-message">
-          {{ errorMessage }}
-          <button mat-icon-button (click)="dismissError()" aria-label="Dismiss">
-            <mat-icon>close</mat-icon>
+          <button type="button"
+            (click)="password_hide = !password_hide"
+            class="absolute right-3 top-2.5 text-white/80 hover:text-white">
+            <span class="material-icons text-lg">
+              {{ password_hide ? 'visibility_off' : 'visibility' }}
+            </span>
           </button>
         </div>
 
-        <p>Already have an account? <a routerLink="/login">Login</a></p>
+        <p *ngIf="passwordModel.invalid && passwordModel.touched"
+           class="text-red-300 text-sm -mt-2">
+          Password must be 8+ chars, include uppercase, lowercase, number & special char.
+        </p>
+
+
+        <!-- Submit -->
+        <button 
+          type="submit"
+          [disabled]="registerForm.invalid"
+          class="w-full py-2.5 rounded-lg font-semibold text-black bg-white
+                 hover:opacity-80 transition disabled:opacity-40">
+          Register
+        </button>
+
+
+        <!-- Server error -->
+        <div *ngIf="errorMessage"
+             class="bg-red-500/20 text-red-300 text-sm p-3 rounded-lg text-center flex justify-between items-center">
+          {{ errorMessage }}
+          <button (click)="dismissError()" class="material-icons text-lg ml-2 hover:text-white">close</button>
+        </div>
+
+
+        <!-- Login instead -->
+        <p class="text-sm text-center text-white/80">
+          Already have an account?
+          <a routerLink="/login" class="text-white font-medium hover:underline">Login</a>
+        </p>
+
       </form>
     </div>
   </div>
 
-  <!-- Right side: image / decoration -->
-  <div class="register-left">
-      <img src="assets/1.png" alt="Illustration">
+
+  <!-- Footer -->
+  <footer class="relative mt-auto w-full py-4 bg-black/60 backdrop-blur-lg border-t border-white/10 text-white/80 z-20">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-3 items-center px-4 gap-2 sm:gap-0">
+
+      <nav class="flex gap-4 justify-center sm:justify-start flex-wrap">
+        <a routerLink="/about" class="hover:underline">About</a>
+        <a routerLink="/privacy" class="hover:underline">Privacy</a>
+        <a routerLink="/terms" class="hover:underline">Terms</a>
+        <a routerLink="/contact" class="hover:underline">Contact</a>
+      </nav>
+
+      <div class="flex justify-center">
+        <p class="text-xs text-center">
+          © {{ currentYear || 2025 }} IronLog • Lift Heavy. Be Strong. Track Smarter.
+        </p>
+      </div>
+
+      <div class="flex justify-center sm:justify-end">
+        <p class="text-sm">🚧 Work in progress</p>
+      </div>
+
     </div>
+  </footer>
+
 </div>
-
-<!-- Footer -->
-<footer class="footer">
-  <div class="footer-inner">
-    <p class="footer-status">🚧 Work in progress: This app is under active development.</p>
-    <nav class="footer-links">
-      <a routerLink="/about">About</a>
-      <a routerLink="/privacy">Privacy</a>
-      <a routerLink="/terms">Terms</a>
-      <a routerLink="/contact">Contact</a>
-    </nav>
-    <p class="footer-copy">© {{ currentYear || 2025 }} IronLog • Lift Heavy. Be Strong. Track Smarter.</p>
-  </div>
-</footer>
-
-

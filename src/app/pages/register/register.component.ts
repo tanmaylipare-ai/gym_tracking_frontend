@@ -9,6 +9,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { NgForm } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon'; 
 import { CommonModule } from '@angular/common';
+import { ThemeService } from '../../core/services/theme.service';
 
 @Component({
   selector: 'app-register',
@@ -17,20 +18,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'  
 })
-// export class RegisterComponent {
-//   username='';
-//   email = '';
-//   password = '';
 
-//   constructor(private auth: AuthService, private router: Router) {}
-
-//   onRegister() {
-//     this.auth.register(this.username,this.email, this.password).subscribe({
-//       next: () => this.router.navigate(['/login']),
-//       error: err => console.error(err)
-//     });
-//   }
-// }
 export class RegisterComponent {
   username = '';
   email = '';
@@ -45,7 +33,7 @@ export class RegisterComponent {
   passwordHasNumber = false;
   passwordHasSpecialChar = false;
 
-  constructor(private auth: AuthService, private router: Router, private snackBar: MatSnackBar) {}
+  constructor(private auth: AuthService, private router: Router, private snackBar: MatSnackBar,private theme: ThemeService) {}
 
   onRegister(form: NgForm) {
     if (form.invalid) {
@@ -75,5 +63,13 @@ export class RegisterComponent {
   this.passwordHasNumber = /\d/.test(pw);
   this.passwordHasSpecialChar = /[\W_]/.test(pw);
 }
+
+  toggleTheme() {
+    this.theme.toggleTheme();
+  }
+
+  get isDark() {
+    return this.theme.isDark();
+  }
 
 }

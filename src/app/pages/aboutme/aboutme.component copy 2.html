@@ -1,0 +1,131 @@
+<div class="portfolio-bg" [class.light]="theme === 'light'">
+  <div id="page" class="portfolio-root wrap">
+    <header>
+        <div class="brand">
+            <div class="avatar">TL</div>
+            <div>
+                <h1>Tanmay Lipare</h1>
+                <div class="subtitle">Frontend developer — Angular · FastAPI · PostgreSQL</div>
+            </div>
+        </div>
+        <div class="nav-section">
+        <nav>
+            <a href="#about">About</a>
+            <a href="#projects">Projects</a>
+            <a href="#contact">Contact</a>
+            </nav>
+            <button class="theme-toggle" (click)="toggleTheme()">{{ themeIcon }}</button>
+        </div>
+    </header>
+     <main>
+    <section>
+      <div class="card hero">
+        <div>
+          <h2 class="lead">Hi — I'm Tanmay. I build polished, maintainable front-end apps.</h2>
+          <small class="subtitle">I specialise in Angular, building secure and scalable UI with a focus on maintainable components and clean UX.</small>
+        </div>
+
+        <div id="about" class="card about">
+          <h3>About</h3>
+          <p>
+            Detail-oriented and results-driven developer with 3 years of experience in front-end development, primarily in energy-utilities and oil & gas. I enjoy modernizing legacy UIs, building reusable Angular components, and implementing secure authentication flows (JWT + FastAPI).
+          </p>
+
+          <div class="grid-2">
+            <div>
+              <h4>Experience</h4>
+              <p class="muted">Tata Consultancy Services — Developer (Nov 2021–Feb 2025)</p>
+            </div>
+            <div>
+              <h4>Education</h4>
+              <p class="muted">B.E. Electronics & Telecom — Ramrao Adik Institute (2017–2021)</p>
+            </div>
+          </div>
+
+          <h4>Skills</h4>
+          <div class="tags">
+            <span class="tag">Angular</span>
+            <span class="tag">HTML/CSS/JS</span>
+            <span class="tag">FastAPI</span>
+            <span class="tag">PostgreSQL</span>
+            <span class="tag">JWT</span>
+          </div>
+        </div>
+
+        <div id="projects" class="projects-section">
+          <h3>Selected Projects</h3>
+          <div class="projects">
+            <div class="project card">
+              <h4>Restaurant Management System <small>(In progress)</small></h4>
+              <p>A full-stack app for table reservation, order tracking, and role-specific dashboards. Built with Angular, FastAPI and PostgreSQL. Implemented JWT-based access control and admin endpoints for order and table management.</p>
+              <div class="tags">
+                <span class="tag">Angular</span>
+                <span class="tag">FastAPI</span>
+                <span class="tag">PostgreSQL</span>
+              </div>
+            </div>
+
+            <div class="project card">
+              <h4>Machine Learning for Cognitive Radio</h4>
+              <p>Academic project comparing ML algorithms to improve spectrum sensing and decision-making in cognitive radio systems. Used Python and MATLAB for experiments and analysis.</p>
+              <div class="tags">
+                <span class="tag">Python</span>
+                <span class="tag">MATLAB</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card achievements">
+        <h3>Experience & Achievements</h3>
+        <ul>
+          <li>Led design & implementation of JWT-based authentication for Angular + FastAPI integration.</li>
+          <li>Modernized HMI screen components into reusable Angular components improving maintainability.</li>
+          <li>Recognised for outstanding performance (Q4 2023).</li>
+        </ul>
+      </div>
+    </section>
+
+    <aside class="sidebar">
+      <div class="card info">
+        <h3>Contact</h3>
+        <div class="meta"><strong>Tanmay Lipare</strong></div>
+        <div class="meta"><span class="muted">Mumbai, India</span></div>
+        <div class="meta"><a href="mailto:liparetanmayofficial@gmail.com">liparetanmayofficial&#64;gmail.com</a></div>
+        <div class="meta"><a href="tel:+918657692585">+91 8657692585</a></div>
+        <div><a href="https://www.linkedin.com/in/tanmay-lipare" target="_blank">LinkedIn</a></div>
+      </div>
+
+      <div class="card quick-links">
+        <h4>Quick links</h4>
+        <a href="#projects">Projects</a>
+        <a> | </a>
+        <a href="#contact">Contact</a>
+        <a> | </a>
+        <a href="/Tanmay_Lipare_Resume.pdf" download>Download CV</a>
+      </div>
+
+      <div class="card contact-form" id="contact">
+        <h4>Contact me</h4>
+        <form (submit)="onSubmit($event)">
+          <label for="name">Name</label>
+          <input id="name" name="name" placeholder="Your name" required />
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" placeholder="you@domain.com" required />
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="5" placeholder="Say hi — let's build something" required></textarea>
+          <button type="submit" class="primary">Send message</button>
+          <p class="form-msg">{{ formMsg }}</p>
+        </form>
+      </div>
+    </aside>
+  </main>
+
+  <footer>
+    <div class="card footer-card">
+      © {{ currentYear }} Tanmay Lipare — Built with care · <a href="#about">Privacy</a>
+    </div>
+  </footer>
+  </div>
+</div>

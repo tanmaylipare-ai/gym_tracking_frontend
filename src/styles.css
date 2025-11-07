@@ -1,25 +1,52 @@
 /* You can add global styles to this file, and also import other style files */
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-:root {
-  --body-bg: #F5F5F5;     /* choose from the list above */
-  --text-color: #111111;  /* strong contrast on light bg */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Light Mode */
+    --bg: 200 50% 90%;
+    --text: 200 50% 10%;
+    --button1: 131, 15%, 22%;
+    --accent: 140 80% 20%;
+
+    --card: 0 0% 100%;           /* white card */
+    --form: 0 0% 98%;           /* slightly off-white input bg */
+    --border: 200 20% 80%;      /* soft gray border */
+    --shadow: 200 50% 20%;      /*dark shadow for light background*/
+    --muted: 200 10% 40%;       /* low contrast text */
+    --danger: 0 90% 50%;
+    --button-text: 0 0% 100%;  
+  }
+
+  .dark {
+    /* Dark Mode */
+    --bg: 200 50% 10%;
+    --text: 200 50% 90%;
+    --button1: 67, 26%, 93%;
+    --accent: 140 80% 80%;  
+
+    --card: 200 30% 14%;        /* subtle dark card */
+    --form: 200 30% 18%;        /* input darker than card */
+    --border: 200 20% 25%;      /* dark border */
+    --shadow: 200 50% 50%;      /*light shadow for dark background*/
+    --muted: 200 10% 60%;       /* low contrast text */
+    --danger: 0 90% 60%;
+    --button-text: 200 50% 10%; 
+  }
 }
 
-:root{
-  --bg: #ffffff;           /* page background (white) */
-  --panel-bg: #ffffff;     /* card/list background */
-  --muted-bg: #f3f3f3;     /* light gray surfaces */
-  --text: #0a0a0a;         /* primary text (near black) */
-  --muted-text: #666666;   /* secondary text */
-  --accent: #000000;       /* black accent */
-  --selected-bg: #666666;  /* selected item background */
-  --selected-text: #ffffff;/* selected text color */
-  --shadow: rgba(0,0,0,0.06);
+html {
+  background-color: oklch(0.96 0.005 264);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
-  
-:host{
-  display:block;
-  background: var(--bg);
-  min-height:100vh;
+
+html.dark {
+  background-color: oklch(0.92 0.005 264);
+}
+
+body {
+  overflow-x: hidden; /* prevent horizontal scroll glitches */
 }

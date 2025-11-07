@@ -1,0 +1,78 @@
+:host {
+  --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", "Noto Color Emoji";
+  --color-blue-500: oklch(0.623 0.214 259.815);
+  --color-purple-500: oklch(0.627 0.265 303.9);
+  --color-pink-500: oklch(0.656 0.241 354.308);
+  --color-gray-400: oklch(0.707 0.022 261.325);
+  --color-gray-900: oklch(0.21 0.034 264.665);
+  font-family: Inter, var(--font-sans);
+  color: #fff;
+  background-color: #030014;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+/* ===========================
+   Animations
+   =========================== */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes spin-slower {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-bounce-slow {
+  animation: bounce 3s infinite;
+}
+
+.animate-pulse-slow {
+  animation: pulse 3s infinite;
+}
+
+.animate-spin-slower {
+  animation: spin-slower 8s linear infinite;
+}
+
+/* ===========================
+   Utility Styles
+   =========================== */
+section {
+  scroll-margin-top: 100px;
+}
+
+a {
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: #a855f7;
+}
+
+button {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+canvas {
+  border-radius: 1rem;
+}
+
+footer {
+  font-size: 0.9rem;
+  opacity: 0.7;
+}

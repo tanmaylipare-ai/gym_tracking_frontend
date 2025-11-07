@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from "@angular/material/icon";
+import { ThemeService } from '../../core/services/theme.service';
 
 @Component({
   selector: 'app-login',
@@ -23,11 +24,10 @@ export class LoginComponent {
   currentYear='2025';
   password_hide=true;
 
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(private auth: AuthService, private router: Router, private theme: ThemeService) { }
 
   onLogin() {
     this.errorMessage = ''; // reset old errors
-
     this.auth.login(this.email, this.password).subscribe({
       next: () => this.router.navigate(['/home']),
       error: err => {
@@ -40,4 +40,13 @@ export class LoginComponent {
       }
     });
   }
+   
+  toggleTheme() {
+    this.theme.toggleTheme();
+  }
+
+  get isDark() {
+    return this.theme.isDark();
+  }
+
 }

@@ -1,0 +1,64 @@
+:root {
+      --bg: #0f1220;
+      --card: #14182b;
+      --text: #e7eaf6;
+      --muted: #a7b0d3;
+      --accent: #6ea8fe;
+      --chip: #1b2240;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;
+      color: #e7eaf6;
+      background: radial-gradient(1200px 800px at 80% -10%, #1a2040 0%, #0f1220 50%) no-repeat,#0f1220;
+      line-height: 1.6;
+    }
+    a { color:  #6ea8fe; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .wrap { max-width: 980px; padding: 32px 20px 64px; margin: 0 auto; }
+    header {
+      display: grid;
+      grid-template-columns: 96px 1fr;
+      gap: 20px;
+      align-items: center;
+      margin-top: 20px;
+    }
+    .avatar {
+      width: 96px; height: 96px; border-radius: 50%;
+      background: linear-gradient(135deg, #2a356b, #1b2240);
+      display: grid; place-items: center; font-weight: 700; color: #cfe2ff;
+      border: 1px solid #2a356b;
+    }
+    h1 { margin: 0; font-size: 28px; }
+    .role { color: #a7b0d3; margin-top: 4px; }
+    .links { margin-top: 8px; display: flex; gap: 14px; flex-wrap: wrap; }
+    .section { margin-top: 40px; }
+    .section h2 { font-size: 18px; letter-spacing: .4px; color: #cbd3f5; margin: 0 0 14px; }
+    .card {
+      background: color-mix(in lab, #14182b 90%, transparent);
+      border: 1px solid #232a52;
+      border-radius: 12px;
+      padding: 18px;
+    }
+    .grid {
+      display: grid; gap: 16px;
+      grid-template-columns: repeat(12, 1fr);
+    }
+    .col-4 { grid-column: span 4; }
+    .col-8 { grid-column: span 8; }
+    @media (max-width: 860px) {
+      header { grid-template-columns: 1fr; text-align: center; }
+      .avatar { margin: 0 auto; }
+      .col-4, .col-8 { grid-column: 1 / -1; }
+    }
+    .chips { display: flex; flex-wrap: wrap; gap: 10px; }
+    .chip {
+      padding: 6px 10px; border-radius: 999px;
+      background: #1b2240; border: 1px solid #2a356b; color: #cbd3f5; font-size: 13px;
+    }
+    .item { display: grid; gap: 6px; }
+    .item h3 { margin: 0; font-size: 16px; }
+    .muted { color: #a7b0d3; font-size: 14px; }
+    .list { display: grid; gap: 12px; }
+    footer { margin-top: 48px; color: #a7b0d3; font-size: 14px; text-align: center; }
